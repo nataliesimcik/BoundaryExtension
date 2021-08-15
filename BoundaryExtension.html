@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test - Boundary Extension Experiment</title>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+
+</head>
+<body></body>
+<script>
+
+/* preload images */
+var preload = {
+        type: 'preload',
+        images: ['images/image1.png', 'images/image2.png','images/image3.png']
+    }
+
+/* welcome message */
+var welcome = {
+        type: 'html-keyboard-response',
+        stimulus: `<p>Welcome! In this experiment, image of scenery will be presented for a short period of time.
+        <b> Try to remember this image in detail. </p> </b>
+        <p>After the image, you will be presented this image one more time and will be asked if the image matches. </p>
+        <p>Press any key to begin.</p>`
+    }
+
+/* fixation */  
+var fixation = {
+     type: 'html-keyboard-response',
+     stimulus: '<div style="font-size:60px;">+</div>',
+     choices: jsPsych.NO_KEYS,
+     trial_duration: 1000,
+    }
+
+/* test round 1*/
+var trial1 = { 
+      type: 'image-keyboard-response',
+      stimulus: 'images/image1.png',
+      stimulus_width: 500,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 2500,
+    }
+
+/* test round 1*/
+var mask= { 
+      type: 'image-keyboard-response',
+      stimulus: 'images/mask.png',
+      stimulus_width: 500,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 3000,
+    }
+  
+/* repeating resized image from trial1 */
+var trial1_2 = { 
+      type: 'image-keyboard-response',
+      stimulus: 'images/image2.png',
+      stimulus_width: 500,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 2500,
+     }
+
+/* Likert scale prep */
+var scale_1 = [
+  "Much larger than the first one", 
+  "Slightly larger than the first one", 
+  "The same", 
+  "Slightly smaller than the first one", 
+  "Much smaller than the first one",
+  ];
+
+/* Likert scale page */
+var likert_page = {
+  type: 'survey-likert',
+  questions: [
+    {prompt: "Second depicted scenery appears:", labels: scale_1}
+  ] };
+  
+/* Debriefing */
+var debriefing= {
+        type: 'html-keyboard-response',
+        stimulus: `Thank you! You've completed a first trial!`
+    }
+
+jsPsych.init({
+    timeline: [preload, welcome, fixation, trial1, mask, trial1_2, likert_page, debriefing ],
+  });
+</script>
+</html>
