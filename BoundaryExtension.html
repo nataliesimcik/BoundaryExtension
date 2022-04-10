@@ -17,7 +17,7 @@
 /* preload images */
 var preload = {
         type: 'preload',
-        images: ['images/image1.png', 'images/image2.png','images/image3.png']
+        images: ['images/image1.png', 'images/image2.png','images/image3.png','images/image4.png', 'images/image5.png','images/image7.png']
     }
 
 /* welcome message */
@@ -34,7 +34,7 @@ var fixation = {
      type: 'html-keyboard-response',
      stimulus: '<div style="font-size:60px;">+</div>',
      choices: jsPsych.NO_KEYS,
-     trial_duration: 2000,
+     trial_duration: 600,
     }
 
 /* test round 1*/
@@ -64,10 +64,11 @@ var stimulus3 = {
 
 /* mask after test round*/
 var mask= { 
-      type: 'html-keyboard-response',
-      stimulus: '<img src="images/mask1.png" style="repeat-y" />',
+      type: 'image-keyboard-response',
+      stimulus: 'images/mask.png',
+      stimulus_width: 500,
       choices: jsPsych.NO_KEYS,
-      trial_duration: 3000,
+      trial_duration: 600,
     }
   
 /* repeating resized stimulus1 */
@@ -153,7 +154,7 @@ var debriefing= {
     }
 
 jsPsych.init({
-    timeline: [preload, welcome, fixation, stimulus1, stimulus2, stimulus3, mask, response1, likert_page, response2, likert_page, response3, likert_page, debriefing ],
+    timeline: [preload, welcome, fixation, stimulus1, mask, stimulus2, mask, stimulus3, mask, response1, likert_page, response2, likert_page, response3, likert_page, debriefing ],
     on_finish: function() {
        // var csv = jsPsych.data.get().csv();
        // var filename = "BE_output.csv";
