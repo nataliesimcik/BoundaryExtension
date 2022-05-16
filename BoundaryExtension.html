@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Test - Boundary Extension Experiment</title>
+    <title>Experiment</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
@@ -18,19 +18,19 @@
 /* welcome message */
 var welcome = {
   type: 'html-button-response',
-  stimulus: '<p>Welcome! In this experiment, multiple images will be presented for a short period of time. <b> Try to remember those images in detail. </p> </b> After the sequence, you will be presented one of the images one more time and will be asked if the image size-wise matches one of the previously presented images. <br><br><br><br></p>',
+  stimulus: '<p>Welcome! <br> In this experiment, multiple images will be presented for a short period of time. <b> Try to remember those images in detail.</b> <br>After the sequence, you will be presented one of the images one more time and will be asked if the image size-wise matches one of the previously presented images. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
   choices: ['Continue'],
-  prompt: '<p style="font-size:12px; color:grey">Tap the button to begin.</p>'
+  prompt: null,
 };
 
 /* TRIAL */ 
 /* Entry message */
 var trialMessage = {
-        type: 'html-button-response',
-        stimulus: '<p>A trial round will be now presented. You will see three sceneries and will be later asked to compare one of those images with previously presented one. <br><br><br><br> </p>',
-        choices: ['Continue'],
-        prompt: '<p style="font-size:12px; color:grey">Tap the button to continue.</p>'
-      }
+      type: 'html-button-response',
+      stimulus: '<p>A trial round will be now presented. You will see three sceneries and will be later asked to compare one of those images with previously presented one.</p><br><br><br><br> <p style="font-size:12px; color:grey">Tap the button to continue.</p>',
+      choices: ['Continue'],
+      prompt: null,
+    }
 
 /* Fixation */
 var fixation = {
@@ -106,9 +106,12 @@ var likertConfTrial = {
   ] }; 
 
   var postTrialMessage = {
-        type: 'html-keyboard-response',
-        stimulus: `<p>You have finished the trial! <br> Press any key to continue.</p>`      
-        }
+        type: 'html-button-response',
+        stimulus: '<p>You have finished the trial! </p><br><br><br><br><p style="font-size:12px; color:grey">Tap the button to continue.</p>',
+        choices: ['Continue'],
+        prompt: null,
+    }
+
         
 /* FIRST ROUND - CC */ 
 /* fixation */  
@@ -183,7 +186,7 @@ var stimulus7 = {
       type: 'image-keyboard-response',
       stimulus: 'images/BE_11.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
+      stimulus_width: 1000,
       trial_duration: 3000,
     }
 
@@ -191,7 +194,7 @@ var stimulus8 = {
       type: 'image-keyboard-response',
       stimulus: 'images/BE_s3.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
+      stimulus_width: 1000,
       trial_duration: 3000,
     }
 
@@ -199,7 +202,7 @@ var stimulus9 = {
       type: 'image-keyboard-response',
       stimulus: 'images/BE_s6.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
+      stimulus_width: 1000,
       trial_duration: 3000,
     }
 
@@ -207,7 +210,7 @@ var stimulus9 = {
 var mask3= { 
       type: 'image-keyboard-response',
       stimulus: 'images/masks/mask2.jpg',
-      stimulus_width: 1200,
+      stimulus_width: 1000,
       choices: jsPsych.NO_KEYS,
       trial_duration: 1500,
     }
@@ -215,7 +218,7 @@ var mask3= {
 /* BE rating - Likert scale page */
 var likertBE2 = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_s3.jpg"; width="1200"></img>',
+  preamble: '<img src="images/BE_s3.jpg"; width="1000"></img>',
   questions: [
     {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
   ] }; 
@@ -241,39 +244,39 @@ var stimulus10 = {
       type: 'image-keyboard-response',
       stimulus: 'images/BE_16.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 var stimulus11 = { 
       type: 'image-keyboard-response',
       stimulus: 'images/BE_18.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 var stimulus12 = { 
       type: 'image-keyboard-response',
       stimulus: 'images/BE_s19.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 /* mask after test round 3*/
 var mask4= { 
       type: 'image-keyboard-response',
       stimulus: 'images/masks/mask5.jpg',
-      stimulus_width: 500,
+      stimulus_width: 1000,
       choices: jsPsych.NO_KEYS,
-      trial_duration: 625,
+      trial_duration: 1500,
     }
   
 /* BE rating - Likert scale page */
 var likertBE3 = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_18.jpg"; width="1200"></img>',
+  preamble: '<img src="images/BE_18.jpg"; width="1000"></img>',
   questions: [
     {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
   ] }; 
@@ -299,39 +302,39 @@ var stimulus13 = {
       type: 'image-keyboard-response',
       stimulus: 'images/BE_s13.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 var stimulus14 = { 
       type: 'image-keyboard-response',
       stimulus: 'images/BE_s10.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 var stimulus15 = { 
       type: 'image-keyboard-response',
       stimulus: 'images/BE_27.jpg',
       choices: jsPsych.NO_KEYS,
-      stimulus_width: 500,
-      trial_duration: 325,
+      stimulus_width: 1000,
+      trial_duration: 3000,
     }
 
 /* mask after test round 4*/
 var mask5= { 
       type: 'image-keyboard-response',
       stimulus: 'images/masks/mask5.jpg',
-      stimulus_width: 500,
+      stimulus_width: 1000,
       choices: jsPsych.NO_KEYS,
-      trial_duration: 625,
+      trial_duration: 1500,
     }
   
 /* BE rating - Likert scale page */
 var likertBE4 = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_s13.jpg"; width="1200"></img>',
+  preamble: '<img src="images/BE_s13.jpg"; width="1000"></img>',
   questions: [
     {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
   ] }; 
@@ -345,8 +348,10 @@ var likertConf4 = {
 
   /* Debriefing message */
 var debriefing = {
-        type: 'html-keyboard-response',
-        stimulus: `Thank you! You have completed all trials!`
+        type: 'html-button-response',
+        stimulus: 'Thank you! You have completed all trials!`</p><br><br><br><br><p style="font-size:12px; color:grey">Tap the button to continue.</p>',
+        choices: ['Download results'],
+        prompt: null,
     }
 
 var timeline = [welcome, trialMessage, fixation, stimulus1, stimulus2, stimulus3, mask1, likertBETrial, likertConfTrial, postTrialMessage, fixation, stimulus4, stimulus5, stimulus6, mask2, likertBE1, likertConf1, fixation, stimulus7, stimulus8, stimulus9, mask3, likertBE2, likertConf2, fixation, stimulus10, stimulus11, stimulus12, mask4, likertBE3, likertConf3, fixation, stimulus13, stimulus14, stimulus15, mask5, likertBE4, likertConf4, debriefing];  
