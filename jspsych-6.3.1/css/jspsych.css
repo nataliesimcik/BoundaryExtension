@@ -9,28 +9,41 @@
 
 /* Container holding jsPsych content */
 
- .jspsych-display-element {
-   display: flex;
-   flex-direction: column;
-   overflow-y: auto;
- }
+.jspsych-image-keyboard-response {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+  outline: #000000;
+  outline-style: solid;
+  outline-width: 10000px;
+}
+
+.jspsych-display-element {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
 
  .jspsych-display-element:focus {
-   outline: none;
+   outline: solid;
  }
 
  .jspsych-content-wrapper {
    display: flex;
-   margin: auto;
    flex: 1 1 100%;
    width: 100%;
+   align-content: center;
  }
 
  .jspsych-content {
-   max-width: 95%; /* this is mainly an IE 10-11 fix */
-   text-align: center;
-   margin: auto; /* this is for overflowing content */
- }
+  max-width: 95%; /* this is mainly an IE 10-11 fix */
+  text-align: center;
+  margin: auto;
+}
 
  .jspsych-top {
    align-items: flex-start;

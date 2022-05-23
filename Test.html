@@ -2,369 +2,283 @@
 <html>
   <head>
     <title>Experiment</title>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-canvas-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
     <script src ="jspsych-6.3.1/plugins/jspsych-multi-stim-multi-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="/assets/javascripts/jatos.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
-
+    
 </head>
 <body></body>
 <script>
-
-/* welcome message */
-var welcome = {
-  type: 'html-button-response',
-  stimulus: '<p>Welcome! <br> In this experiment, multiple images will be presented for a short period of time. <b> Try to remember those images in detail.</b> <br>After the sequence, you will be presented one of the images one more time and will be asked if the image size-wise matches one of the previously presented images. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
-  choices: ['Continue'],
-  prompt: null,
-    }
-    
-var timestamp = (new Date).toISOString().replaceAll(":", "-").replaceAll("T", "-").trim(); 
-jsPsych.data.addProperties({Timestamp: timestamp});
-
-/* TRIAL */ 
-/* Entry message */
-var trialMessage = {
-      type: 'html-button-response',
-      stimulus: '<p>A trial round will be now presented. You will see three sceneries and will be later asked to compare one of those images with previously presented one.</p><br><br><br><br> <p style="font-size:12px; color:grey">Tap the button to continue.</p>',
-      choices: ['Continue'],
-      prompt: null,
-    }
-
-/* Fixation */
-var fixation = {
-     type: 'html-keyboard-response',
-     stimulus: '<div style="font-size:60px;">+</div>',
-     choices: jsPsych.NO_KEYS,
-     trial_duration: 1,
-    }
-
-/* Trial test round*/
-var stimulus1 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s30.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
-      trial_duration: 1,
-    }
-
-var stimulus2 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s29.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
-      trial_duration: 1,
-    }
-
-var stimulus3 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_35.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1200,
-      trial_duration: 1,
-    }
-
-/* mask after Trial round*/
-var mask1= { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/masks/mask4.jpg',
-      stimulus_width: 1200,
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 1,
-    }
-  
-/* Likert scale - BE prep */
-var scale_1 = [
+/* Prep for the Scales */
+var scaleBE = [
   "Further", 
   "Slightly further", 
   "The same", 
   "Slightly closer", 
   "Closer",
-  ];
+];
 
-/* BE rating - Likert scale page */
-var likertBETrial = {
-  type: 'survey-likert',
-  preamble: '<img src="images/BE_35.jpg"; width="1200"></img>',
-  questions: [
-    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
-  ] }; 
-
-/* Likert scale - confidence prep */
-var scale_2 = [
+var scaleConfidence = [
   "Sure", 
   "Pretty sure", 
   "Not sure", 
-  ];
+];
 
-/* Likert scale page */
-var likertConfTrial = {
-  type: 'survey-likert',
-  questions: [
-    {prompt: "How sure I am about my answer", labels: scale_2}
-  ] }; 
-
-  var postTrialMessage = {
-        type: 'html-button-response',
-        stimulus: '<p>You have finished the trial! </p><br><br><br><br><p style="font-size:12px; color:grey">Tap the button to continue.</p>',
-        choices: ['Continue'],
-        prompt: null,
-    }
-
-        
-/* FIRST ROUND - CC */ 
-/* fixation */  
+/* Prep of the reusable elements */
 var fixation = {
      type: 'html-keyboard-response',
      stimulus: '<div style="font-size:60px;">+</div>',
      choices: jsPsych.NO_KEYS,
-     trial_duration: 1,
+     trial_duration: 1500,
+ }
+
+var responseConfidence = {
+    type: 'survey-likert',
+    questions: [
+    {prompt: "How sure I am about my answer", labels: scaleConfidence}
+    ] 
+}; 
+
+//PREP FOR MASK SHUFFLE//
+var maskArray = ['images/masks/mask1.jpg', 'images/masks/mask2.jpg', 'images/masks/mask3.jpg', 'images/masks/mask4.jpg', 'images/masks/mask5.jpg'];
+var maskRandom = '<img src="' + (jsPsych.randomization.repeat(maskArray, 1)).slice(0,1) + '" width="1200px"></img>';
+console.log(maskRandom);
+
+//Reusable mask variable//
+var mask = { 
+  timeline: [ { 
+      type: 'html-keyboard-response',
+      stimulus: jsPsych.timelineVariable('mask'),
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 2000,
+  } 
+    ],
+    timeline_variables: [
+        {mask: maskRandom},
+    ]
+}
+
+//PREP FOR THE IMAGE SHUFFLE//
+
+var timeline = [];
+var images = ['images/BE_5.jpg', 'images/BE_s30.jpg', 'images/BE_14.jpg', 'images/BE_15.jpg', 'images/BE_s25.jpg', 'images/BE_s30.jpg', 'images/BE_s7.jpg'];
+var preload = {
+    type: 'preload',
+    images: images,
+    show_detailed_errors: true,
+}
+
+//pool of stimulus images
+var imageArray = ["BE_14.jpg", "BE_5.jpg", "BE_s4.jpg", "BE_s7.jpg", "BE_s25.jpg", "BE_s30.jpg"];
+
+function shuffle(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i]; a[i] = a[j]; a[j] = x;
+        }
+        return a;
     }
 
-/* test round 1*/
-var stimulus4 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_10.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
+var shuffledImage = shuffle(imageArray);
 
-var stimulus5 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s1.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
 
-var stimulus6 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_12.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
+//Stimuli variables
+var testTrialImage1 = '<img src="images/'+ shuffledImage.slice(0,1) + '" width="1200px"></img>';
+var testTrialImage2 = '<img src="images/'+ shuffledImage.slice(1,2) + '" width="1200px"></img>';
+var testTrialImage3 = '<img src="images/'+ shuffledImage.slice(2,3) + '" width="1200px"></img>';
+var trial1Image1 = '<img src="images/'+ shuffledImage.slice(3,4) + '" width="1200px"></img>';
+var trial1Image2 = '<img src="images/'+ shuffledImage.slice(4,5) + '" width="1200px"></img>';
+var trial1Image3 = '<img src="images/'+ shuffledImage.slice(5,6) + '" width="1200px"></img>';
+var trial2Image1 = '<img src="images/'+ shuffledImage.slice(6,7) + '" width="1200px"></img>';
+var trial2Image2 = '<img src="images/'+ shuffledImage.slice(7,8) + '" width="1200px"></img>';
+var trial2Image3 = '<img src="images/'+ shuffledImage.slice(8,9) + '" width="1200px"></img>';
+var trial3Image1 = '<img src="images/'+ shuffledImage.slice(9,10) + '" width="1200px"></img>';
+var trial3Image2 = '<img src="images/'+ shuffledImage.slice(10,11) + '" width="1200px"></img>';
+var trial3Image3 = '<img src="images/'+ shuffledImage.slice(11,12) + '" width="1200px"></img>';
+var trial4Image1 = '<img src="images/'+ shuffledImage.slice(12,13) + '" width="1200px"></img>';
+var trial4Image2 = '<img src="images/'+ shuffledImage.slice(13,14) + '" width="1200px"></img>';
+var trial4Image3 = '<img src="images/'+ shuffledImage.slice(14,15) + '" width="1200px"></img>';
+var trial2Image3CW  = '<img src="images/W/'+ shuffledImage.slice(8,9) + '" width="1200px"></img>';
+var trial3Image2WC = '<img src="images/W/'+ shuffledImage.slice(10,11) + '" width="1200px"></img>';
 
-/* mask after first test round*/
-var mask2= { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/masks/mask1.jpg',
-      stimulus_width: 1000,
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 1,
-    }
-  
-/* BE rating - Likert scale page */
-var likertBE1 = {
+
+console.log(testTrialImage1,testTrialImage2,testTrialImage3);
+
+
+/* START OF THE EXPERIMENT */
+var welcome = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> In this experiment, multiple images will be presented for a short period of time. <b> Try to remember those images in detail.</b> <br>After the sequence, you will be presented one of the images one more time and will be asked if the image size-wise matches one of the previously presented images. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+}
+
+var timestamp = (new Date).toISOString().replaceAll(":", "-").replaceAll("T", "-").trim(); 
+jsPsych.data.addProperties({Timestamp: timestamp});
+
+/* PRACTICE TRIAL STARTS THERE */
+var trialMessage = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> Practice round will start now. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+} 
+ var testTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        css_classes: jsPsych.timelineVariable('css_class'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage1},
+        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage2},
+        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage3},
+    ]
+}
+
+var responseBETrial = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_12.jpg"; width="1000"></img>',
+  preamble: testTrialImage2,
   questions: [
-    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
-  ] }; 
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   //could be reusable if I find create this as a function instead of the variable 
 
-/* Likert scale page - Confidence */
-var likertConf1 = {
+
+var postTrialMessage = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> You have completed the practice round, testing will start now. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+}
+
+/* CC TRIAL STARTS THERE */
+var CCTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        css_classes: jsPsych.timelineVariable('css_class'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image1},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image2},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image3},
+    ]
+}
+
+var responseBETrialCC = {
   type: 'survey-likert',
+  preamble: trial1Image1,
   questions: [
-    {prompt: "How sure I am about my answer", labels: scale_2}
-  ] }; 
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
 
+/* CW TRIAL STARTS THERE */
+  var CWTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        css_classes: jsPsych.timelineVariable('css_class'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image1},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image2},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image3},
+    ]
+}
 
-/* SECOND ROUND - CW */ 
-/* fixation */  
-var fixation = {
-     type: 'html-keyboard-response',
-     stimulus: '<div style="font-size:60px;">+</div>',
-     choices: jsPsych.NO_KEYS,
-     trial_duration: 1,
-    }
-
-/* test round 2*/
-var stimulus7 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_11.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus8 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s3.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus9 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s6.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-/* mask after test round 2*/
-var mask3= { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/masks/mask2.jpg',
-      stimulus_width: 1000,
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 1,
-    }
-  
-/* BE rating - Likert scale page */
-var likertBE2 = {
+var responseBETrialCW = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_s3.jpg"; width="1000"></img>',
+  preamble: trial2Image3CW,
   questions: [
-    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
-  ] }; 
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
 
-/* Confidence likert scale page */
-var likertConf2 = {
+ /* WC TRIAL STARTS THERE */ 
+  var WCTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        css_classes: jsPsych.timelineVariable('css_class'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image1},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image2},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image3},
+    ]
+}
+
+var responseBETrialWC = {
   type: 'survey-likert',
+  preamble: trial3Image2WC,
   questions: [
-    {prompt: "How sure I am about my answer", labels: scale_2}
-  ] }; 
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
 
-/* THIRD ROUND - WW */ 
-/* fixation */  
-var fixation = {
-     type: 'html-keyboard-response',
-     stimulus: '<div style="font-size:60px;">+</div>',
-     choices: jsPsych.NO_KEYS,
-     trial_duration: 1,
-    }
+/* PRACTICE TRIAL STARTS THERE */
+  var WWTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        css_classes: jsPsych.timelineVariable('css_class'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image1},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image2},
+        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image3},
+    ]
+}
 
-/* test round 3 starts*/
-var stimulus10 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_16.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus11 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_18.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus12 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s19.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-/* mask after test round 3*/
-var mask4= { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/masks/mask5.jpg',
-      stimulus_width: 1000,
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 1,
-    }
-  
-/* BE rating - Likert scale page */
-var likertBE3 = {
+var responseBETrialCC = {
   type: 'survey-likert',
-  preamble: '<img src="images/BE_18.jpg"; width="1000"></img>',
+  preamble: trial4Image2,
   questions: [
-    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
-  ] }; 
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
 
-/* Confidecne rating Likert scale page */
-var likertConf3 = {
-  type: 'survey-likert',
-  questions: [
-    {prompt: "How sure I am about my answer", labels: scale_2}
-  ] }; 
-
-/* FOURTH ROUND - WC */ 
-/* fixation */  
-var fixation = {
-     type: 'html-keyboard-response',
-     stimulus: '<div style="font-size:60px;">+</div>',
-     choices: jsPsych.NO_KEYS,
-     trial_duration: 600,
-    }
-
-/* test round 4*/
-var stimulus13 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s13.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus14 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_s10.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-var stimulus15 = { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/BE_27.jpg',
-      choices: jsPsych.NO_KEYS,
-      stimulus_width: 1000,
-      trial_duration: 1,
-    }
-
-/* mask after test round 4*/
-var mask5= { 
-      type: 'image-keyboard-response',
-      stimulus: 'images/masks/mask5.jpg',
-      stimulus_width: 1000,
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 1,
-    }
-  
-/* BE rating - Likert scale page */
-var likertBE4 = {
-  type: 'survey-likert',
-  preamble: '<img src="images/BE_s13.jpg"; width="1000"></img>',
-  questions: [
-    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scale_1}
-  ] }; 
-
-/* Likert scale page - Confidence */
-var likertConf4 = {
-  type: 'survey-likert',
-  questions: [
-    {prompt: "How sure I am about my answer", labels: scale_2}
-  ] }; 
-
-  /* Debriefing message */
-var debriefing = {
-        type: 'html-button-response',
-        stimulus: 'Thank you! You have completed all trials!`</p><br><br><br><br><p style="font-size:12px; color:grey">Tap the button to continue.</p>',
-        choices: ['Download results'],
-        prompt: null,
-    }
-
-var timeline = [welcome, trialMessage, fixation, stimulus1, stimulus2, stimulus3, mask1, likertBETrial, likertConfTrial, postTrialMessage, fixation, stimulus4, stimulus5, stimulus6, mask2, likertBE1, likertConf1, fixation, stimulus7, stimulus8, stimulus9, mask3, likertBE2, likertConf2, fixation, stimulus10, stimulus11, stimulus12, mask4, likertBE3, likertConf3, fixation, stimulus13, stimulus14, stimulus15, mask5, likertBE4, likertConf4, debriefing];  
+var timeline = [preload, welcome, trialMessage, testTrial, mask, responseBETrial, responseConfidence, postTrialMessage, 
+CCTrial, responseBETrialCC, responseConfidence];
+//jatos.onLoad(function() {
 jsPsych.init({
+    override_safe_mode: true,
+    preload: images,
     timeline: timeline,
     on_finish: function() {
       jsPsych.data.displayData('json');
       var file_name = 'subject_' + timestamp + '_data.json';
       jsPsych.data.get().localSave('json',file_name);
+      jatos.submitResultData(resultJson, jatos.endStudy);
        }
     });
+//});
 </script>
 </html>
