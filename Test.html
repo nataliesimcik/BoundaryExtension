@@ -54,18 +54,23 @@ var maskRandom = '<img src="' + (jsPsych.randomization.repeat(maskArray, 1)).sli
 console.log(maskRandom);
 
 //Reusable mask variable//
-var mask = { 
-  timeline: [ { 
-      type: 'html-keyboard-response',
-      stimulus: jsPsych.timelineVariable('mask'),
-      choices: jsPsych.NO_KEYS,
-      trial_duration: 2000,
-  } 
+var mask = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('mask'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 500,
+        }
     ],
     timeline_variables: [
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
         {mask: maskRandom},
     ]
-}
+} 
 
 //PREP FOR THE IMAGE SHUFFLE//
 
@@ -93,23 +98,24 @@ var shuffledImage = shuffle(imageArray);
 
 
 //Stimuli variables
-var testTrialImage1 = '<img src="images/'+ shuffledImage.slice(0,1) + '" width="1200px"></img>';
-var testTrialImage2 = '<img src="images/'+ shuffledImage.slice(1,2) + '" width="1200px"></img>';
-var testTrialImage3 = '<img src="images/'+ shuffledImage.slice(2,3) + '" width="1200px"></img>';
-var trial1Image1 = '<img src="images/'+ shuffledImage.slice(3,4) + '" width="1200px"></img>';
-var trial1Image2 = '<img src="images/'+ shuffledImage.slice(4,5) + '" width="1200px"></img>';
-var trial1Image3 = '<img src="images/'+ shuffledImage.slice(5,6) + '" width="1200px"></img>';
-var trial2Image1 = '<img src="images/'+ shuffledImage.slice(6,7) + '" width="1200px"></img>';
-var trial2Image2 = '<img src="images/'+ shuffledImage.slice(7,8) + '" width="1200px"></img>';
-var trial2Image3 = '<img src="images/'+ shuffledImage.slice(8,9) + '" width="1200px"></img>';
-var trial3Image1 = '<img src="images/'+ shuffledImage.slice(9,10) + '" width="1200px"></img>';
-var trial3Image2 = '<img src="images/'+ shuffledImage.slice(10,11) + '" width="1200px"></img>';
-var trial3Image3 = '<img src="images/'+ shuffledImage.slice(11,12) + '" width="1200px"></img>';
-var trial4Image1 = '<img src="images/'+ shuffledImage.slice(12,13) + '" width="1200px"></img>';
-var trial4Image2 = '<img src="images/'+ shuffledImage.slice(13,14) + '" width="1200px"></img>';
-var trial4Image3 = '<img src="images/'+ shuffledImage.slice(14,15) + '" width="1200px"></img>';
-var trial2Image3CW  = '<img src="images/W/'+ shuffledImage.slice(8,9) + '" width="1200px"></img>';
-var trial3Image2WC = '<img src="images/W/'+ shuffledImage.slice(10,11) + '" width="1200px"></img>';
+var testTrialImage1 = '<img src="images/'+ shuffledImage[1] + '" width="1200px"></img>';
+var testTrialImage2 = '<img src="images/'+ shuffledImage[2] + '" width="1200px"></img>';
+var testTrialImage3 = '<img src="images/'+ shuffledImage[3] + '" width="1200px"></img>';
+var trial1Image1 = '<img src="images/C/'+ shuffledImage[4] + '" width="1200px"></img>';
+var trial1Image2 = '<img src="images/C/'+ shuffledImage[5] + '" width="1200px"></img>';
+var trial1Image3 = '<img src="images/C/'+ shuffledImage[6] + '" width="1200px"></img>';
+var trial2Image1 = '<img src="images/'+ shuffledImage[7] + '" width="1200px"></img>';
+var trial2Image2 = '<img src="images/'+ shuffledImage[8] + '" width="1200px"></img>';
+var trial2Image3 = '<img src="images/'+ shuffledImage[9] + '" width="1200px"></img>';
+var trial3Image1 = '<img src="images/'+ shuffledImage[10] + '" width="1200px"></img>';
+var trial3Image2 = '<img src="images/'+ shuffledImage[11] + '" width="1200px"></img>';
+var trial3Image3 = '<img src="images/'+ shuffledImage[12] + '" width="1200px"></img>';
+var trial4Image1 = '<img src="images/'+ shuffledImage[13] + '" width="1200px"></img>';
+var trial4Image2 = '<img src="images/'+ shuffledImage[14] + '" width="1200px"></img>';
+var trial4Image3 = '<img src="images/'+ shuffledImage[15] + '" width="1200px"></img>';
+var trial1Image3CC  = '<img src="images/C/'+ shuffledImage[16] + '" width="1200px"></img>';
+var trial2Image3CW  = '<img src="images/C/'+ shuffledImage[17] + '" width="1200px"></img>';
+var trial3Image2WC = '<img src="images/C/'+ shuffledImage[18] + '" width="1200px"></img>';
 
 
 console.log(testTrialImage1,testTrialImage2,testTrialImage3);
@@ -133,22 +139,21 @@ var trialMessage = {
   choices: ['Continue'],
   prompt: null,
 } 
- var testTrial = {
+var testTrial = {
     timeline: [ 
         {
         type: 'html-keyboard-response',
         stimulus: jsPsych.timelineVariable('image'),
-        css_classes: jsPsych.timelineVariable('css_class'),
         choices: jsPsych.NO_KEYS,
-        trial_duration: 9000,
+        trial_duration: 3000,
         }
     ],
     timeline_variables: [
-        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage1},
-        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage2},
-        {css_class: ['jspsych-image-keyboard-response'], image: testTrialImage3},
+        {image: testTrialImage1},
+        {image: testTrialImage2},
+        {image: testTrialImage3},
     ]
-}
+} 
 
 var responseBETrial = {
   type: 'survey-likert',
@@ -171,15 +176,14 @@ var CCTrial = {
         {
         type: 'html-keyboard-response',
         stimulus: jsPsych.timelineVariable('image'),
-        css_classes: jsPsych.timelineVariable('css_class'),
         choices: jsPsych.NO_KEYS,
-        trial_duration: 9000,
+        trial_duration: 3000,
         }
     ],
     timeline_variables: [
-        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image1},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image2},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial1Image3},
+        {image: trial1Image1},
+        {image: trial1Image2},
+        {image: trial1Image3},
     ]
 }
 
@@ -196,15 +200,14 @@ var responseBETrialCC = {
         {
         type: 'html-keyboard-response',
         stimulus: jsPsych.timelineVariable('image'),
-        css_classes: jsPsych.timelineVariable('css_class'),
         choices: jsPsych.NO_KEYS,
-        trial_duration: 9000,
+        trial_duration: 3000,
         }
     ],
     timeline_variables: [
-        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image1},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image2},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial2Image3},
+        {image: trial2Image1},
+        {image: trial2Image2},
+        {image: trial2Image3},
     ]
 }
 
@@ -221,15 +224,14 @@ var responseBETrialCW = {
         {
         type: 'html-keyboard-response',
         stimulus: jsPsych.timelineVariable('image'),
-        css_classes: jsPsych.timelineVariable('css_class'),
         choices: jsPsych.NO_KEYS,
         trial_duration: 9000,
         }
     ],
     timeline_variables: [
-        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image1},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image2},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial3Image3},
+        {image: trial3Image1},
+        {image: trial3Image2},
+        {image: trial3Image3},
     ]
 }
 
@@ -240,21 +242,20 @@ var responseBETrialWC = {
     {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
   ] };   
 
-/* PRACTICE TRIAL STARTS THERE */
+/* WW TRIAL STARTS THERE */
   var WWTrial = {
     timeline: [ 
         {
         type: 'html-keyboard-response',
         stimulus: jsPsych.timelineVariable('image'),
-        css_classes: jsPsych.timelineVariable('css_class'),
         choices: jsPsych.NO_KEYS,
         trial_duration: 9000,
         }
     ],
     timeline_variables: [
-        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image1},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image2},
-        {css_class: ['jspsych-image-keyboard-response'], image: trial4Image3},
+        {image: trial4Image1},
+        {image: trial4Image2},
+        {image: trial4Image3},
     ]
 }
 
@@ -267,6 +268,9 @@ var responseBETrialCC = {
 
 var timeline = [preload, welcome, trialMessage, testTrial, mask, responseBETrial, responseConfidence, postTrialMessage, 
 CCTrial, responseBETrialCC, responseConfidence];
+//CWTrial, responseBETrialCW, responseConfidence,
+//WWTrial, responseBETrialWW, responseConfidence,
+//WCTrial, responseBETrialWC, responseConfidence
 //jatos.onLoad(function() {
 jsPsych.init({
     override_safe_mode: true,
@@ -276,6 +280,7 @@ jsPsych.init({
       jsPsych.data.displayData('json');
       var file_name = 'subject_' + timestamp + '_data.json';
       jsPsych.data.get().localSave('json',file_name);
+      var resultJson = jsPsych.data.get().json();
       jatos.submitResultData(resultJson, jatos.endStudy);
        }
     });

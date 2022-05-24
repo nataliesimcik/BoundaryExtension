@@ -9,27 +9,17 @@
 
 /* Container holding jsPsych content */
 
-.jspsych-image-keyboard-response {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  justify-content: center;
-  align-items: center;
-  outline: #000000;
-  outline-style: solid;
-  outline-width: 10000px;
-}
-
 .jspsych-display-element {
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  background-color: #000000;
 }
 
  .jspsych-display-element:focus {
-   outline: solid;
+   outline: #000000;
  }
 
  .jspsych-content-wrapper {
@@ -57,6 +47,7 @@
 
 .jspsych-display-element {
   font-family: 'Open Sans', 'Arial', sans-serif;
+  color: whitesmoke;
   font-size: 18px;
   line-height: 1.6em;
 }
@@ -131,7 +122,7 @@
   background: #eee;
   box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
   border-radius: 2px;
-  border: 1px solid #aaa;
+ 
 }
 .jspsych-slider::-moz-range-track {
   appearance: none;
