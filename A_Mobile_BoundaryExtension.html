@@ -35,23 +35,23 @@ const MASK_DURATION = 500;
 const POST_MASK_DURATION = 2500;
 const AFTER_TRIAL_GAP = 1000;
 
-pathToMasks = "images/GroupB/Masks/";
-pathToCloseups = "images/GroupB/CC/"; 
-pathToWideAngles = "images/GroupB/WW/"; 
+pathToMasks = "images/GroupA/Masks/";
+pathToCloseups = "images/GroupA/CC/"; 
+pathToWideAngles = "images/GroupA/WW/"; 
 
 var runOnServer = (typeof jatos !== 'undefined');
 var timestamp = (new Date).toISOString().replaceAll(":", "-").replaceAll("T", "-").trim(); 
 
 //PREP FOR MASK SHUFFLE//
-var maskArray = ['mask1.jpg', 'mask3.jpg', 'mask5.jpg', 'mask7.jpg', 'mask9.jpg', 'mask11.jpg'];
+var maskArray = ['mask2.jpg', 'mask4.jpg', 'mask6.jpg', 'mask8.jpg', 'mask10.jpg', 'mask12.jpg'];
 maskArray = maskArray.map(s => pathToMasks + s);
 
 //pool of stimulus images - Group A
 var imageArray = [
-"BE_1.jpg", "BE_3.jpg", "BE_5.jpg", "BE_7.jpg", "BE_9.jpg", "BE_11.jpg", "BE_13.jpg", "BE_15.jpg", "BE_17.jpg", "BE_19.jpg", "BE_21.jpg", 
-"BE_23.jpg", "BE_25.jpg", "BE_27.jpg", "BE_29.jpg", "BE_31.jpg", "BE_33.jpg", "BE_35.jpg", "BE_37.jpg", "BE_39.jpg", "BE_41.jpg", "BE_43.jpg",
-"BE_45.jpg", "BE_47.jpg", "BE_49.jpg", "BE_51.jpg", "BE_53.jpg", "BE_55.jpg", "BE_57.jpg", "BE_59.jpg", "BE_61.jpg", "BE_63.jpg", "BE_65.jpg", 
-"BE_67.jpg", 
+"BE_2.jpg", "BE_4.jpg", "BE_6.jpg", "BE_8.jpg", "BE_10.jpg", "BE_12.jpg", "BE_14.jpg", "BE_16.jpg", "BE_18.jpg", "BE_20.jpg", "BE_22.jpg", 
+"BE_24.jpg", "BE_26.jpg", "BE_28.jpg", "BE_30.jpg", "BE_32.jpg", "BE_34.jpg", "BE_36.jpg", "BE_38.jpg", "BE_40.jpg", "BE_42.jpg", "BE_44.jpg",
+"BE_46.jpg", "BE_48.jpg", "BE_50.jpg", "BE_52.jpg", "BE_54.jpg", "BE_56.jpg", "BE_58.jpg", "BE_60.jpg", "BE_62.jpg", "BE_64.jpg", "BE_66.jpg",
+"BE_68.jpg", 
 ]
 
 function shuffle(a) {
@@ -75,10 +75,10 @@ var nTrials = shuffledConditions.length;
 var presentedImageOrder = shuffle([0, 1 , 2, 0, 1, 2, 0, 1]);
 
 var im1 = "images/BE_5.jpg";
-var im2 = "images/BE_7.jpg";
-var im3 = "images/BE_9.jpg";
-var imq = "images/BE_11.jpg";
-var imm = "images/Masks/Mask1.jpg";
+var im2 = "images/BE_6.jpg";
+var im3 = "images/BE_7.jpg";
+var imq = "images/BE_5.jpg";
+var imm = "images/Masks/Mask2.jpg";
 
 var preload_masks = {
   type: 'preload',
@@ -204,7 +204,7 @@ for (let i = 0; i < nTrials; i++) {
   timeline.push(trial);
 }
 
-//jatos.onLoad(function() {
+jatos.onLoad(function() {
 jsPsych.init({
     override_safe_mode: true,
     timeline: timeline,
@@ -218,6 +218,6 @@ jsPsych.init({
       }
     }
   });
-//});
+});
 </script>
 </html>

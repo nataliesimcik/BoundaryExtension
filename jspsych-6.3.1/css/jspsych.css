@@ -10,12 +10,12 @@
 /* Container holding jsPsych content */
 
 .jspsych-display-element {
-  justify-content: center;
-  align-items: center;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   background-color: #000000;
+  justify-content: center;
+  align-items: center;
 }
 
  .jspsych-display-element:focus {
@@ -24,6 +24,7 @@
 
  .jspsych-content-wrapper {
    display: flex;
+   margin: auto;
    flex: 1 1 100%;
    width: 100%;
    align-content: center;
@@ -208,9 +209,4 @@
 /* Control appearance of jsPsych.data.displayData() */
 #jspsych-data-display {
   text-align: left;
-}
-
-/* Stimulus width */
-#stimulus {
-  width: 1200px;
 }
