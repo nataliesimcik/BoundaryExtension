@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Experiment</title>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-canvas-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src ="jspsych-6.3.1/plugins/jspsych-multi-stim-multi-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="/assets/javascripts/jatos.js"></script>
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+    
+</head>
+<body></body>
+<script>
+/* Prep for the Scales */
+var scaleBE = [
+  "Further", 
+  "Slightly further", 
+  "The same", 
+  "Slightly closer", 
+  "Closer",
+];
+
+var scaleConfidence = [
+  "Sure", 
+  "Pretty sure", 
+  "Not sure", 
+];
+
+/* Prep of the reusable elements */
+var fixation = {
+     type: 'html-keyboard-response',
+     stimulus: '<div style="font-size:60px;">+</div>',
+     choices: jsPsych.NO_KEYS,
+     trial_duration: 1500,
+ }
+
+var responseConfidence = {
+    type: 'survey-likert',
+    questions: [
+    {prompt: "How sure I am about my answer", labels: scaleConfidence}
+    ] 
+}; 
+
+//PREP FOR MASK SHUFFLE//
+var maskArray = ['images/masks/mask1.jpg', 'images/masks/mask2.jpg', 'images/masks/mask3.jpg', 'images/masks/mask4.jpg', 'images/masks/mask5.jpg'];
+var maskRandom = '<img src="' + (jsPsych.randomization.repeat(maskArray, 1)).slice(0,1) + '" width="1200px"></img>';
+console.log(maskRandom);
+
+//Reusable mask variable//
+var mask = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('mask'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 500,
+        }
+    ],
+    timeline_variables: [
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: '<img src="images/blank.jpg"></img>'},
+        {mask: maskRandom},
+    ]
+} 
+
+//PREP FOR THE IMAGE SHUFFLE//
+
+var timeline = [];
+var images = ['images/BE_5.jpg', 'images/BE_s30.jpg', 'images/BE_14.jpg', 'images/BE_15.jpg', 'images/BE_s25.jpg', 'images/BE_s30.jpg', 'images/BE_s7.jpg'];
+var preload = {
+    type: 'preload',
+    images: images,
+    show_detailed_errors: true,
+}
+
+//pool of stimulus images
+var imageArray = ["BE_14.jpg", "BE_5.jpg", "BE_s4.jpg", "BE_s7.jpg", "BE_s25.jpg", "BE_s30.jpg"];
+
+function shuffle(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i]; a[i] = a[j]; a[j] = x;
+        }
+        return a;
+    }
+
+var shuffledImage = shuffle(imageArray);
+
+
+//Stimuli variables
+var testTrialImage1 = '<img src="images/'+ shuffledImage[1] + '" width="1200px"></img>';
+var testTrialImage2 = '<img src="images/'+ shuffledImage[2] + '" width="1200px"></img>';
+var testTrialImage3 = '<img src="images/'+ shuffledImage[3] + '" width="1200px"></img>';
+var trial1Image1 = '<img src="images/C/'+ shuffledImage[4] + '" width="1200px"></img>';
+var trial1Image2 = '<img src="images/C/'+ shuffledImage[5] + '" width="1200px"></img>';
+var trial1Image3 = '<img src="images/C/'+ shuffledImage[6] + '" width="1200px"></img>';
+var trial2Image1 = '<img src="images/'+ shuffledImage[7] + '" width="1200px"></img>';
+var trial2Image2 = '<img src="images/'+ shuffledImage[8] + '" width="1200px"></img>';
+var trial2Image3 = '<img src="images/'+ shuffledImage[9] + '" width="1200px"></img>';
+var trial3Image1 = '<img src="images/'+ shuffledImage[10] + '" width="1200px"></img>';
+var trial3Image2 = '<img src="images/'+ shuffledImage[11] + '" width="1200px"></img>';
+var trial3Image3 = '<img src="images/'+ shuffledImage[12] + '" width="1200px"></img>';
+var trial4Image1 = '<img src="images/'+ shuffledImage[13] + '" width="1200px"></img>';
+var trial4Image2 = '<img src="images/'+ shuffledImage[14] + '" width="1200px"></img>';
+var trial4Image3 = '<img src="images/'+ shuffledImage[15] + '" width="1200px"></img>';
+var trial1Image3CC  = '<img src="images/C/'+ shuffledImage[16] + '" width="1200px"></img>';
+var trial2Image3CW  = '<img src="images/C/'+ shuffledImage[17] + '" width="1200px"></img>';
+var trial3Image2WC = '<img src="images/C/'+ shuffledImage[18] + '" width="1200px"></img>';
+
+
+console.log(testTrialImage1,testTrialImage2,testTrialImage3);
+
+
+/* START OF THE EXPERIMENT */
+var welcome = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> In this experiment, multiple images will be presented for a short period of time. <b> Try to remember those images in detail.</b> <br>After the sequence, you will be presented one of the images one more time and will be asked if the image size-wise matches one of the previously presented images. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+}
+
+var timestamp = (new Date).toISOString().replaceAll(":", "-").replaceAll("T", "-").trim(); 
+jsPsych.data.addProperties({Timestamp: timestamp});
+
+/* PRACTICE TRIAL STARTS THERE */
+var trialMessage = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> Practice round will start now. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+} 
+var testTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 3000,
+        }
+    ],
+    timeline_variables: [
+        {image: testTrialImage1},
+        {image: testTrialImage2},
+        {image: testTrialImage3},
+    ]
+} 
+
+var responseBETrial = {
+  type: 'survey-likert',
+  preamble: testTrialImage2,
+  questions: [
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   //could be reusable if I find create this as a function instead of the variable 
+
+
+var postTrialMessage = {
+  type: 'html-button-response',
+  stimulus: '<p>Welcome! <br> You have completed the practice round, testing will start now. <br><br><br><br></p> <p style="font-size:12px; color:grey">Tap the button to begin.</p>',
+  choices: ['Continue'],
+  prompt: null,
+}
+
+/* CC TRIAL STARTS THERE */
+var CCTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 3000,
+        }
+    ],
+    timeline_variables: [
+        {image: trial1Image1},
+        {image: trial1Image2},
+        {image: trial1Image3},
+    ]
+}
+
+var responseBETrialCC = {
+  type: 'survey-likert',
+  preamble: trial1Image1,
+  questions: [
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
+
+/* CW TRIAL STARTS THERE */
+  var CWTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 3000,
+        }
+    ],
+    timeline_variables: [
+        {image: trial2Image1},
+        {image: trial2Image2},
+        {image: trial2Image3},
+    ]
+}
+
+var responseBETrialCW = {
+  type: 'survey-likert',
+  preamble: trial2Image3CW,
+  questions: [
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
+
+ /* WC TRIAL STARTS THERE */ 
+  var WCTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {image: trial3Image1},
+        {image: trial3Image2},
+        {image: trial3Image3},
+    ]
+}
+
+var responseBETrialWC = {
+  type: 'survey-likert',
+  preamble: trial3Image2WC,
+  questions: [
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
+
+/* WW TRIAL STARTS THERE */
+  var WWTrial = {
+    timeline: [ 
+        {
+        type: 'html-keyboard-response',
+        stimulus: jsPsych.timelineVariable('image'),
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 9000,
+        }
+    ],
+    timeline_variables: [
+        {image: trial4Image1},
+        {image: trial4Image2},
+        {image: trial4Image3},
+    ]
+}
+
+var responseBETrialCC = {
+  type: 'survey-likert',
+  preamble: trial4Image2,
+  questions: [
+    {prompt: "In comparison with the same scene presented before, this photograph appears:", labels: scaleBE}
+  ] };   
+
+var timeline = [preload, welcome, trialMessage, testTrial, mask, responseBETrial, responseConfidence, postTrialMessage, 
+CCTrial, responseBETrialCC, responseConfidence];
+//CWTrial, responseBETrialCW, responseConfidence,
+//WWTrial, responseBETrialWW, responseConfidence,
+//WCTrial, responseBETrialWC, responseConfidence
+//jatos.onLoad(function() {
+jsPsych.init({
+    override_safe_mode: true,
+    preload: images,
+    timeline: timeline,
+    on_finish: function() {
+      jsPsych.data.displayData('json');
+      var file_name = 'subject_' + timestamp + '_data.json';
+      jsPsych.data.get().localSave('json',file_name);
+      var resultJson = jsPsych.data.get().json();
+      jatos.submitResultData(resultJson, jatos.endStudy);
+       }
+    });
+//});
+</script>
+</html>

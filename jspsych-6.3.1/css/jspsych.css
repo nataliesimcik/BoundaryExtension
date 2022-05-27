@@ -57,6 +57,7 @@
 .jspsych-display-element input[type="text"] {
   font-family: 'Open Sans', 'Arial', sans-serif;
   font-size: 14px;
+  color: whitesmoke;
 }
 
 /* borrowing Bootstrap style for btn elements, but combining styles a bit */
@@ -207,4 +208,9 @@
 /* Control appearance of jsPsych.data.displayData() */
 #jspsych-data-display {
   text-align: left;
+}
+
+/* Stimulus width */
+#stimulus {
+  width: 1200px;
 }
