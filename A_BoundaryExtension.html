@@ -94,12 +94,6 @@ var be_trial = {
       images: jsPsych.timelineVariable('used_images'),
       show_detailed_errors: true,
     }, 
-    // confirm start
-    {
-      type: 'html-button-response',
-      stimulus: '<p>Vítejte! <br> V tomto experimentu bude vaším úkolem si co nejlépe zapamatovat prezentované fotografie. <br> Ve čtyřech kolech vám budou prezentovány po krátkou dobu tři fotografie následované pauzou a vizuální maskou (rušivým obrázkem). <br> Po této sekvenci vám bude znovu prezentována jedna z již zobrazených fotografií. <b>Vaším úkolem bude porovnat, zdali se scény na nich liší vzdáleností (scéna je stejná, blíže či dále).</b> <br> <br> Po této zprávě bude zahájeno <b>zácvikové</b> kolo.',
-      choices: ['START'],
-    },
     // fixation
     {
       type: 'html-keyboard-response',
@@ -176,6 +170,97 @@ var be_trial = {
 
 var timeline = [];
 
+var practice = {
+  timeline: [
+    // preload
+    {
+      type: 'preload',
+      images: ['images/Practice/Trial1.jpg', 'images/Practice/Trial2.jpg', 'images/Practice/Trial3.jpg', 'images/Practice/Mask1.jpg'],
+      show_detailed_errors: true,
+    }, 
+    // practice trial message
+    {
+      type: 'html-button-response',
+      stimulus: '<p>Vítejte! <br> V tomto experimentu bude vaším úkolem si co nejlépe zapamatovat prezentované fotografie. <br> Ve čtyřech kolech vám budou prezentovány po krátkou dobu tři fotografie následované pauzou a vizuální maskou (rušivým obrázkem). <br> Po této sekvenci vám bude znovu prezentována jedna z již zobrazených fotografií. <b>Vaším úkolem bude porovnat, zdali se scény na nich liší vzdáleností (scéna je stejná, blíže či dále).</b> <br> <br> Po této zprávě bude zahájeno <b>zácvikové</b> kolo.',
+      choices: ['START'],
+    },
+    // fixation
+    {
+      type: 'html-keyboard-response',
+      stimulus: '<div style="font-size:60px;">+</div>',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 500,
+    },
+    // image 1
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial1.jpg',
+      stimulus_width: 1200,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // image 2
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial2.jpg',
+      stimulus_width: 1200,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // image 3
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial3.jpg',
+      stimulus_width: 1200,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // brief mask
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/TrialMask1.jpg',
+      stimulus_width: 1200,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: MASK_DURATION,
+    },
+    // blank
+    {
+      type: 'html-keyboard-response',
+      stimulus: '',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: POST_MASK_DURATION,
+    },
+    // response
+    {
+      type: 'image-button-response',
+      stimulus: 'images/Practice/Trial2.jpg',
+      stimulus_width: 1200,
+      prompt: '<p>V porovnání s dříve prezentovanou fotografií mi scéna na této fotografii připadá:</p>',
+      choices: scaleBE,
+    },
+    // confidence
+    {
+      type: 'html-button-response',
+      stimulus: 'Jak moc jsem si svou odpovědí jistý/á:',
+      choices: scaleConfidence,
+    },
+    // pracitce round finish
+    {
+      type: 'html-button-response',
+      stimulus: '<p>Právě jste dokončili první zácvikové kolo. Po stisknutí tlačítka začnete experiment.</p>',
+      choices: ['POKRAČOVAT K EXPERIMENTU'],
+    },
+    // blank
+    {
+      type: 'html-keyboard-response',
+      stimulus: '',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1500,
+    },
+  ], 
+  }
+timeline.push(practice);
+
 for (let i = 0; i < nTrials; i++) {
   var trial = { ... be_trial }; // make a copy
   var o = 3 * i; // index offset
@@ -203,6 +288,16 @@ for (let i = 0; i < nTrials; i++) {
   ]
   timeline.push(trial);
 }
+
+// trial finished
+var debriefing = {
+      type: 'html-keyboard-response',
+      stimulus: '<p>Dokončili jste všechny kola experimentu.</p>',
+      trial_duration: 5000,
+      choices: jsPsych.NO_KEYS,
+    }
+
+  timeline.push(debriefing);
 
 jatos.onLoad(function() {
 jsPsych.init({

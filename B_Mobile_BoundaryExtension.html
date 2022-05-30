@@ -43,15 +43,15 @@ var runOnServer = (typeof jatos !== 'undefined');
 var timestamp = (new Date).toISOString().replaceAll(":", "-").replaceAll("T", "-").trim(); 
 
 //PREP FOR MASK SHUFFLE//
-var maskArray = ['mask1.jpg', 'mask3.jpg', 'mask5.jpg', 'mask7.jpg', 'mask9.jpg', 'mask11.jpg'];
+var maskArray = ['mask2.jpg', 'mask4.jpg', 'mask6.jpg', 'mask8.jpg', 'mask10.jpg', 'mask12.jpg'];
 maskArray = maskArray.map(s => pathToMasks + s);
 
 //pool of stimulus images - Group A
 var imageArray = [
-"BE_1.jpg", "BE_3.jpg", "BE_5.jpg", "BE_7.jpg", "BE_9.jpg", "BE_11.jpg", "BE_13.jpg", "BE_15.jpg", "BE_17.jpg", "BE_19.jpg", "BE_21.jpg", 
-"BE_23.jpg", "BE_25.jpg", "BE_27.jpg", "BE_29.jpg", "BE_31.jpg", "BE_33.jpg", "BE_35.jpg", "BE_37.jpg", "BE_39.jpg", "BE_41.jpg", "BE_43.jpg",
-"BE_45.jpg", "BE_47.jpg", "BE_49.jpg", "BE_51.jpg", "BE_53.jpg", "BE_55.jpg", "BE_57.jpg", "BE_59.jpg", "BE_61.jpg", "BE_63.jpg", "BE_65.jpg", 
-"BE_67.jpg", 
+"BE_2.jpg", "BE_4.jpg", "BE_6.jpg", "BE_8.jpg", "BE_10.jpg", "BE_12.jpg", "BE_14.jpg", "BE_16.jpg", "BE_18.jpg", "BE_20.jpg", "BE_22.jpg", 
+"BE_24.jpg", "BE_26.jpg", "BE_28.jpg", "BE_30.jpg", "BE_32.jpg", "BE_34.jpg", "BE_36.jpg", "BE_38.jpg", "BE_40.jpg", "BE_42.jpg", "BE_44.jpg",
+"BE_46.jpg", "BE_48.jpg", "BE_50.jpg", "BE_52.jpg", "BE_54.jpg", "BE_56.jpg", "BE_58.jpg", "BE_60.jpg", "BE_62.jpg", "BE_64.jpg", "BE_66.jpg",
+"BE_68.jpg", 
 ]
 
 function shuffle(a) {
@@ -75,10 +75,10 @@ var nTrials = shuffledConditions.length;
 var presentedImageOrder = shuffle([0, 1 , 2, 0, 1, 2, 0, 1]);
 
 var im1 = "images/BE_5.jpg";
-var im2 = "images/BE_7.jpg";
-var im3 = "images/BE_9.jpg";
-var imq = "images/BE_11.jpg";
-var imm = "images/Masks/Mask1.jpg";
+var im2 = "images/BE_6.jpg";
+var im3 = "images/BE_7.jpg";
+var imq = "images/BE_5.jpg";
+var imm = "images/Masks/Mask2.jpg";
 
 var preload_masks = {
   type: 'preload',
@@ -94,12 +94,6 @@ var be_trial = {
       images: jsPsych.timelineVariable('used_images'),
       show_detailed_errors: true,
     }, 
-    // confirm start
-    {
-      type: 'html-button-response',
-      stimulus: '<p>Vítejte! <br> V tomto experimentu bude vaším úkolem si co nejlépe zapamatovat prezentované fotografie. <br> Ve čtyřech kolech vám budou prezentovány po krátkou dobu tři fotografie následované pauzou a vizuální maskou (rušivým obrázkem). <br> Po této sekvenci vám bude znovu prezentována jedna z již zobrazených fotografií. <b>Vaším úkolem bude porovnat, zdali se scény na nich liší vzdáleností (scéna je stejná, blíže či dále).</b> <br> <br> Po této zprávě bude zahájeno <b>zácvikové</b> kolo.',
-      choices: ['START'],
-    },
     // fixation
     {
       type: 'html-keyboard-response',
@@ -111,7 +105,7 @@ var be_trial = {
     {
       type: 'image-keyboard-response',
       stimulus: jsPsych.timelineVariable('image1'),
-      stimulus_width: 1200,
+      stimulus_width: 650,
       choices: jsPsych.NO_KEYS,
       trial_duration: PREVIEW_DURATION,
     },
@@ -119,7 +113,7 @@ var be_trial = {
     {
       type: 'image-keyboard-response',
       stimulus: jsPsych.timelineVariable('image2'),
-      stimulus_width: 1200,
+      stimulus_width: 650,
       choices: jsPsych.NO_KEYS,
       trial_duration: PREVIEW_DURATION,
     },
@@ -127,7 +121,7 @@ var be_trial = {
     {
       type: 'image-keyboard-response',
       stimulus: jsPsych.timelineVariable('image3'),
-      stimulus_width: 1200,
+      stimulus_width: 650,
       choices: jsPsych.NO_KEYS,
       trial_duration: PREVIEW_DURATION,
     },
@@ -135,7 +129,7 @@ var be_trial = {
     {
       type: 'image-keyboard-response',
       stimulus: jsPsych.timelineVariable('mask'),
-      stimulus_width: 1200,
+      stimulus_width: 650,
       choices: jsPsych.NO_KEYS,
       trial_duration: MASK_DURATION,
     },
@@ -150,7 +144,7 @@ var be_trial = {
     {
       type: 'image-button-response',
       stimulus: jsPsych.timelineVariable('imageq'),
-      stimulus_width: 1200,
+      stimulus_width: 650,
       prompt: '<p>V porovnání s dříve prezentovanou fotografií mi scéna na této fotografii připadá:</p>',
       choices: scaleBE,
     },
@@ -175,6 +169,97 @@ var be_trial = {
 };
 
 var timeline = [];
+
+var practice = {
+  timeline: [
+    // preload
+    {
+      type: 'preload',
+      images: ['images/Practice/Trial1.jpg', 'images/Practice/Trial2.jpg', 'images/Practice/Trial3.jpg', 'images/Practice/Mask1.jpg'],
+      show_detailed_errors: true,
+    }, 
+    // practice trial message
+    {
+      type: 'html-button-response',
+      stimulus: '<p>Vítejte! <br> V tomto experimentu bude vaším úkolem si co nejlépe zapamatovat prezentované fotografie. <br> Ve čtyřech kolech vám budou prezentovány po krátkou dobu tři fotografie následované pauzou a vizuální maskou (rušivým obrázkem). <br> Po této sekvenci vám bude znovu prezentována jedna z již zobrazených fotografií. <b>Vaším úkolem bude porovnat, zdali se scény na nich liší vzdáleností (scéna je stejná, blíže či dále).</b> <br> <br> Po této zprávě bude zahájeno <b>zácvikové</b> kolo.',
+      choices: ['START'],
+    },
+    // fixation
+    {
+      type: 'html-keyboard-response',
+      stimulus: '<div style="font-size:60px;">+</div>',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 500,
+    },
+    // image 1
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial1.jpg',
+      stimulus_width: 650,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // image 2
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial2.jpg',
+      stimulus_width: 650,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // image 3
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/Trial3.jpg',
+      stimulus_width: 650,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: PREVIEW_DURATION,
+    },
+    // brief mask
+    {
+      type: 'image-keyboard-response',
+      stimulus: 'images/Practice/TrialMask1.jpg',
+      stimulus_width: 650,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: MASK_DURATION,
+    },
+    // blank
+    {
+      type: 'html-keyboard-response',
+      stimulus: '',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: POST_MASK_DURATION,
+    },
+    // response
+    {
+      type: 'image-button-response',
+      stimulus: 'images/Practice/Trial2.jpg',
+      stimulus_width: 650,
+      prompt: '<p>V porovnání s dříve prezentovanou fotografií mi scéna na této fotografii připadá:</p>',
+      choices: scaleBE,
+    },
+    // confidence
+    {
+      type: 'html-button-response',
+      stimulus: 'Jak moc jsem si svou odpovědí jistý/á:',
+      choices: scaleConfidence,
+    },
+    // pracitce round finish
+    {
+      type: 'html-button-response',
+      stimulus: '<p>Právě jste dokončili první zácvikové kolo. Po stisknutí tlačítka začnete experiment.</p>',
+      choices: ['POKRAČOVAT K EXPERIMENTU'],
+    },
+    // blank
+    {
+      type: 'html-keyboard-response',
+      stimulus: '',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1500,
+    },
+  ], 
+  }
+timeline.push(practice);
 
 for (let i = 0; i < nTrials; i++) {
   var trial = { ... be_trial }; // make a copy
@@ -204,7 +289,17 @@ for (let i = 0; i < nTrials; i++) {
   timeline.push(trial);
 }
 
-//jatos.onLoad(function() {
+// trial finished
+var debriefing = {
+      type: 'html-keyboard-response',
+      stimulus: '<p>Dokončili jste všechny kola experimentu.</p>',
+      trial_duration: 5000,
+      choices: jsPsych.NO_KEYS,
+    }
+
+  timeline.push(debriefing);
+
+jatos.onLoad(function() {
 jsPsych.init({
     override_safe_mode: true,
     timeline: timeline,
@@ -218,6 +313,6 @@ jsPsych.init({
       }
     }
   });
-//});
+});
 </script>
 </html>
